@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.cdnfonts.com/css/lemon-milk" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4f1ea; --paper2:#ece6d8; --ink:#18170f; --ink-soft:#6b675c;
+  --accent:#e7522d; --accent2:#FF8000; --line:#d8d2c4; --dark:#131b3a; --on-dark:#eef1f8; --on-dark-soft:#9ba6c4; --on-dark-line:rgba(255,255,255,.14);
+  --texture:linear-gradient(rgba(13,19,42,.46),rgba(13,19,42,.68)),url("assets/img/texture-topo-v2.jpg");
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img{display:block; max-width:100%;}
+::selection{background:var(--accent2); color:#fff;}
+@keyframes hintpulse{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(5px);opacity:1}}
+</style>
+</helmet>
+
+<div>
+
+<header style="position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px clamp(20px,5vw,64px);background:rgba(15,21,46,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--on-dark-line)">
+  <a href="index.html" style="text-decoration:none;color:var(--on-dark);font-family:'Lemon Milk','Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;letter-spacing:0.04em;font-size:15px">Matías Neira</a>
+  <nav style="display:flex;align-items:center;gap:clamp(12px,1.8vw,28px);flex-wrap:wrap;justify-content:flex-end">
+    <button onClick="{{ goWork }}" style="background:none;border:none;font:inherit;cursor:pointer;color:var(--on-dark);font-size:13px;font-weight:500;letter-spacing:0.01em;padding:4px 0">{{ nav_work }}</button>
+    <button onClick="{{ goAbout }}" style="background:none;border:none;font:inherit;cursor:pointer;color:var(--on-dark);font-size:13px;font-weight:500;letter-spacing:0.01em;padding:4px 0">{{ nav_about }}</button>
+    <button onClick="{{ goApproach }}" style="background:none;border:none;font:inherit;cursor:pointer;color:var(--on-dark);font-size:13px;font-weight:500;letter-spacing:0.01em;padding:4px 0">{{ nav_approach }}</button>
+    <button onClick="{{ goContact }}" style="background:none;border:none;font:inherit;cursor:pointer;color:var(--on-dark);font-size:13px;font-weight:500;letter-spacing:0.01em;padding:4px 0">{{ nav_contact }}</button>
+    <span style="width:1px;height:14px;background:var(--on-dark-line)"></span>
+    <div style="display:flex;align-items:center;gap:8px">
+      <sc-for list="{{ langs }}" as="lng" hint-placeholder-count="5">
+        <button onClick="{{ lng.onSelect }}" style="{{ lng.style }}">{{ lng.label }}</button>
+      </sc-for>
+    </div>
+  </nav>
+</header>
+
+<section data-screen-label="Hero" style="min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;padding:120px clamp(20px,5vw,64px) 44px;background-image:var(--texture);background-size:cover;background-position:center;background-repeat:no-repeat;background-color:var(--dark);color:var(--on-dark)">
+  <div style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap">
+    <span style="font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;color:var(--accent)">{{ hero_eyebrow }}</span>
+    <span style="font-size:12px;letter-spacing:0.04em;color:var(--on-dark-soft);max-width:38ch;text-align:right">{{ role }}</span>
+  </div>
+  <h1 style="font-size:clamp(2.7rem,8vw,7rem);line-height:0.97;letter-spacing:-0.028em;font-weight:700;margin:0.2em 0;max-width:16ch;text-wrap:balance;color:var(--on-dark)">{{ hero_h }}</h1>
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap">
+    <p style="max-width:44ch;font-size:clamp(1rem,1.35vw,1.25rem);line-height:1.55;color:var(--on-dark-soft);margin:0">{{ hero_sub }}</p>
+    <div style="text-align:right;display:flex;flex-direction:column;gap:14px;align-items:flex-end">
+      <span style="font-size:12px;letter-spacing:0.04em;color:var(--on-dark-soft)">{{ hero_loc }}</span>
+      <span style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--on-dark);display:inline-flex;align-items:center;gap:8px">{{ scroll }} <span style="display:inline-block;animation:hintpulse 1.8s ease-in-out infinite">↓</span></span>
+    </div>
+  </div>
+</section>
+
+<section style="padding:clamp(56px,9vh,128px) clamp(20px,5vw,64px)">
+  <div style="display:flex;gap:clamp(16px,3vw,40px);align-items:flex-start">
+    <span style="flex:0 0 auto;width:38px;height:2px;background:var(--accent);margin-top:1.1em"></span>
+    <p style="font-size:clamp(1.7rem,4.3vw,3.6rem);line-height:1.18;letter-spacing:-0.02em;font-weight:400;max-width:26ch;margin:0">{{ statement }}</p>
+  </div>
+</section>
+
+<section id="work" data-screen-label="Work" style="padding:clamp(40px,6vh,80px) clamp(20px,5vw,64px) clamp(60px,9vh,128px);border-top:1px solid var(--line)">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:clamp(20px,3vh,34px)">
+    <span style="font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;color:var(--accent)">{{ work_label }}</span>
+    <span style="font-size:12px;letter-spacing:0.1em;color:var(--ink-soft)">01 — 02</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:clamp(48px,7vh,100px)">
+
+    <a href="Proyecto-DAHD.html" data-cursor="{{ cta_view }}" style="text-decoration:none;color:inherit;display:block;border-top:2px solid var(--ink);padding-top:24px">
+      <div style="display:flex;gap:clamp(28px,4vw,64px);flex-wrap:wrap;align-items:stretch">
+        <div style="flex:1 1 320px;min-width:280px;position:relative;overflow:hidden;border-radius:3px;aspect-ratio:4/5;background:var(--paper2)">
+          <img src="assets/img/dahd-print-lab-vertical.png" alt="DAHD" style="width:100%;height:100%;object-fit:cover;object-position:center bottom;transition:transform .9s cubic-bezier(.22,1,.36,1)" style-hover="transform:scale(1.05)">
+        </div>
+        <div style="flex:1 1 340px;min-width:280px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;text-align:right">
+          <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:16px">{{ dahd_meta }}</div>
+          <div style="font-size:clamp(2.2rem,4.8vw,4.8rem);font-weight:700;letter-spacing:-0.03em;line-height:0.98;text-wrap:balance" style-hover="color:var(--accent2)">{{ dahd_title }}</div>
+          <div style="color:var(--ink-soft);font-size:1.05rem;line-height:1.5;margin-top:20px;max-width:34ch">{{ dahd_sub }}</div>
+        </div>
+      </div>
+    </a>
+
+    <a href="Proyecto-Ocular.html" data-cursor="{{ cta_view }}" style="text-decoration:none;color:inherit;display:block">
+      <div style="border-top:2px solid var(--ink);padding-top:16px;margin-bottom:22px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap;margin-bottom:12px">
+          <div style="color:var(--ink-soft);font-size:1rem">{{ ocular_sub }}</div>
+          <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap">{{ ocular_meta }}</div>
+        </div>
+        <div style="font-size:clamp(2rem,6.6vw,5.6rem);font-weight:700;letter-spacing:-0.03em;line-height:0.98;text-wrap:balance" style-hover="color:var(--accent2)">{{ ocular_title }}</div>
+      </div>
+      <div style="position:relative;overflow:hidden;border-radius:3px;aspect-ratio:2/1;background:var(--paper2)">
+        <img src="assets/img/ocular-front.png" alt="Ocular" style="width:100%;height:100%;object-fit:cover;object-position:center 36%;transform:scaleX(-1);transition:transform .9s cubic-bezier(.22,1,.36,1)" style-hover="transform:scaleX(-1) scale(1.05)">
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<section id="about" data-screen-label="About" style="padding:clamp(60px,9vh,128px) clamp(20px,5vw,64px);border-top:1px solid var(--line);background:var(--paper2);overflow:hidden">
+  <span style="font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;color:var(--accent)">{{ about_label }}</span>
+  <div style="max-width:64ch;margin-top:18px">
+    <p style="font-size:clamp(1.4rem,2.2vw,2rem);line-height:1.32;letter-spacing:-0.015em;font-weight:500;margin:0">{{ about_bio }}</p>
+    <p style="font-size:1.05rem;line-height:1.6;color:var(--ink-soft);margin:20px 0 0">{{ about_p2 }}</p>
+  </div>
+  <div style="display:flex;gap:clamp(28px,4vw,72px);flex-wrap:wrap;align-items:stretch;margin-top:clamp(44px,6vh,80px)">
+    <div style="flex:1 1 300px;min-width:260px;margin-left:calc(-1*clamp(20px,5vw,64px));position:relative;min-height:340px;align-self:stretch">
+      <img src="assets/img/portrait.png" alt="Matías Neira" style="position:absolute;left:0;bottom:0;height:100%;width:auto;max-width:150%;object-fit:contain;object-position:left bottom;mix-blend-mode:multiply;filter:saturate(.97)">
+    </div>
+    <div style="flex:1 1 460px;min-width:300px">
+      <div>
+        <span style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;color:var(--ink-soft)">{{ cap_label }}</span>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:14px;margin-top:16px">
+          <div style="display:flex;flex-direction:column;gap:16px;padding:20px;background:var(--paper);border:1px solid var(--line);border-radius:6px">
+            <span style="width:48px;height:48px;border-radius:50%;background:rgba(231,82,45,.12);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v5.5L5.2 17a2 2 0 0 0 1.8 3h10a2 2 0 0 0 1.8-3L14 8.5V3"/><path d="M7.5 14h9"/></svg></span>
+            <span style="font-size:1rem;line-height:1.35;font-weight:500">{{ cap1 }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;padding:20px;background:var(--paper);border:1px solid var(--line);border-radius:6px">
+            <span style="width:48px;height:48px;border-radius:50%;background:rgba(231,82,45,.12);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 20.5 7v10L12 21.5 3.5 17V7z"/><path d="M3.7 7 12 11.5 20.3 7"/><path d="M12 11.5V21.3"/></svg></span>
+            <span style="font-size:1rem;line-height:1.35;font-weight:500">{{ cap2 }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;padding:20px;background:var(--paper);border:1px solid var(--line);border-radius:6px">
+            <span style="width:48px;height:48px;border-radius:50%;background:rgba(231,82,45,.12);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 21 7.5 12 12 3 7.5z"/><path d="M3 12l9 4.5L21 12"/><path d="M3 16.5 12 21l9-4.5"/></svg></span>
+            <span style="font-size:1rem;line-height:1.35;font-weight:500">{{ cap3 }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;padding:20px;background:var(--paper);border:1px solid var(--line);border-radius:6px">
+            <span style="width:48px;height:48px;border-radius:50%;background:rgba(231,82,45,.12);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.6 2.6L16 9"/></svg></span>
+            <span style="font-size:1rem;line-height:1.35;font-weight:500">{{ cap4 }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;padding:20px;background:var(--paper);border:1px solid var(--line);border-radius:6px">
+            <span style="width:48px;height:48px;border-radius:50%;background:rgba(231,82,45,.12);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h13"/><path d="M14 6l3 3-3 3"/><path d="M20 15H7"/><path d="M10 12l-3 3 3 3"/></svg></span>
+            <span style="font-size:1rem;line-height:1.35;font-weight:500">{{ cap5 }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;padding:20px;background:var(--paper);border:1px solid var(--line);border-radius:6px">
+            <span style="width:48px;height:48px;border-radius:50%;background:rgba(231,82,45,.12);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3.5" width="7.5" height="7.5" rx="1"/><rect x="13.5" y="3.5" width="7.5" height="4.5" rx="1"/><rect x="13.5" y="11" width="7.5" height="9.5" rx="1"/><rect x="3" y="13.5" width="7.5" height="7" rx="1"/></svg></span>
+            <span style="font-size:1rem;line-height:1.35;font-weight:500">{{ cap6 }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<sc-if value="{{ showRec }}" hint-placeholder-val="{{ true }}">
+<section style="padding:clamp(56px,8vh,110px) clamp(20px,5vw,64px);border-top:1px solid var(--line)">
+  <span style="font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;color:var(--accent)">{{ rec_label }}</span>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:clamp(28px,4vw,56px);margin-top:36px">
+    <sc-for list="{{ recs }}" as="rec" hint-placeholder-count="4">
+      <div style="border-top:2px solid var(--ink);padding-top:18px">
+        <div style="font-size:clamp(1.1rem,1.6vw,1.35rem);font-weight:600;letter-spacing:-0.01em">{{ rec.t }}</div>
+        <div style="color:var(--ink-soft);margin-top:10px;font-size:0.98rem;line-height:1.5">{{ rec.d }}</div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+</sc-if>
+
+<section id="approach" data-screen-label="Approach" style="background-image:var(--texture);background-size:cover;background-position:center;background-repeat:no-repeat;background-color:var(--dark);color:var(--on-dark);padding:clamp(72px,13vh,170px) clamp(20px,5vw,64px)">
+  <span style="font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;color:var(--accent)">{{ proj_label }}</span>
+  <p style="font-size:clamp(1.4rem,3vw,2.5rem);line-height:1.3;letter-spacing:-0.01em;font-weight:400;max-width:30ch;margin:26px 0 0;color:var(--on-dark)">{{ proj_text }}</p>
+</section>
+
+<section id="contact" data-screen-label="Contact" style="padding:clamp(72px,11vh,150px) clamp(20px,5vw,64px)">
+  <span style="font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;color:var(--accent)">{{ contact_label }}</span>
+  <h2 style="font-size:clamp(3rem,9vw,7rem);font-weight:700;letter-spacing:-0.035em;line-height:0.98;margin:12px 0 26px">{{ contact_h }}</h2>
+  <p style="font-size:clamp(1.05rem,1.5vw,1.3rem);line-height:1.55;color:var(--ink-soft);max-width:42ch;margin:0">{{ contact_text }}</p>
+  <div style="display:flex;flex-wrap:wrap;gap:48px;align-items:flex-start;margin-top:clamp(40px,6vh,72px)">
+    <div style="flex:1 1 340px;display:flex;flex-direction:column;gap:26px">
+      <div>
+        <div style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px">{{ l_email }}</div>
+        <a href="mailto:matiasachede@gmail.com" style="text-decoration:none;color:var(--ink);font-size:clamp(1.3rem,2.4vw,2rem);font-weight:500;letter-spacing:-0.01em;border-bottom:2px solid var(--accent2);padding-bottom:2px">matiasachede@gmail.com</a>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:40px">
+        <div>
+          <div style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px">{{ l_phone }}</div>
+          <a href="tel:+34671870011" style="text-decoration:none;color:var(--ink);font-size:1.15rem;font-weight:500">(+34) 671 870 011</a>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px">{{ l_loc }}</div>
+          <span style="font-size:1.15rem;font-weight:500">Barcelona, España</span>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px">{{ l_ig }}</div>
+          <a href="https://instagram.com/m.neira_dsgn" target="_blank" rel="noopener" style="text-decoration:none;color:var(--ink);font-size:1.15rem;font-weight:500">@m.neira_dsgn</a>
+        </div>
+      </div>
+    </div>
+    <a href="https://instagram.com/m.neira_dsgn" target="_blank" rel="noopener" data-cursor="@m.neira_dsgn" style="flex:0 0 auto;text-decoration:none">
+      <img src="assets/img/qr-instagram.png" alt="Instagram @m.neira_dsgn" style="width:140px;height:auto;mix-blend-mode:multiply">
+    </a>
+  </div>
+</section>
+
+<footer style="border-top:1px solid var(--line);padding:26px clamp(20px,5vw,64px);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:center;font-size:13px;color:var(--ink-soft)">
+  <span>{{ copyright }}</span>
+  <span>{{ footer }}</span>
+  <button onClick="{{ toTop }}" style="background:none;border:none;font:inherit;cursor:pointer;color:var(--ink);font-size:13px;letter-spacing:0.04em;display:inline-flex;align-items:center;gap:7px">↑ Top</button>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#14ff99&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#e7522d&quot;,&quot;#FF8000&quot;,&quot;#2d7d8a&quot;,&quot;#18170f&quot;]},&quot;accent2&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF8000&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#FF8000&quot;,&quot;#e7522d&quot;,&quot;#2de6b8&quot;,&quot;#ffffff&quot;]},&quot;startLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;es&quot;,&quot;options&quot;:[&quot;es&quot;,&quot;en&quot;,&quot;fr&quot;,&quot;de&quot;,&quot;ca&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;showRecognition&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    let lang = "es";
+    try { lang = localStorage.getItem("pf_lang") || props.startLang || "es"; } catch(e){ lang = props.startLang || "es"; }
+    this.state = { lang, ready:false };
+    this._I18N = null; this._LANGS = [];
+  }
+  async componentDidMount(){
+    try {
+      const m = await import("./i18n.js");
+      this._I18N = m.I18N; this._LANGS = m.LANGS;
+    } catch(e){ console.error("i18n load failed", e); }
+    try {
+      if (this.props.accent) document.documentElement.style.setProperty("--accent", this.props.accent);
+      if (this.props.accent2) document.documentElement.style.setProperty("--accent2", this.props.accent2);
+    } catch(e){}
+    this.setState({ ready:true });
+    try {
+      const c = await import("./cursor.js");
+      const cs = getComputedStyle(document.documentElement);
+      const acc = (cs.getPropertyValue("--accent")||"").trim() || "#e7522d";
+      const acc2 = (cs.getPropertyValue("--accent2")||"").trim() || "#FF8000";
+      c.initCursor({ accent: acc, hoverAccent: acc2, ink: "#18170f" });
+    } catch(e){}
+  }
+  setLang(code){
+    try { localStorage.setItem("pf_lang", code); } catch(e){}
+    this.setState({ lang: code });
+  }
+  scrollTo(id){
+    const el = document.getElementById(id);
+    if(el) window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 60, behavior:"smooth" });
+  }
+  renderVals(){
+    const lang = this.state.lang;
+    const t = (this._I18N && this._I18N[lang]) || {};
+    const langs = (this._LANGS||[]).map(l=>({
+      code:l.code, label:l.label,
+      onSelect: ()=>this.setLang(l.code),
+      style: "background:none;border:none;font-family:inherit;cursor:pointer;padding:2px;font-size:12px;letter-spacing:0.08em;font-weight:"+(l.code===lang?"700":"400")+";color:"+(l.code===lang?"var(--accent2)":"var(--on-dark-soft)")
+    }));
+    const recs = [[t.rec1t,t.rec1d],[t.rec2t,t.rec2d],[t.rec3t,t.rec3d],[t.rec4t,t.rec4d]].map(r=>({ t:r[0], d:r[1] }));
+    return Object.assign({}, t, {
+      langs, recs,
+      showRec: this.props.showRecognition !== false,
+      goWork: ()=>this.scrollTo("work"),
+      goAbout: ()=>this.scrollTo("about"),
+      goApproach: ()=>this.scrollTo("approach"),
+      goContact: ()=>this.scrollTo("contact"),
+      toTop: ()=>window.scrollTo({ top:0, behavior:"smooth" })
+    });
+  }
+}
+</script>
+</body>
+</html>

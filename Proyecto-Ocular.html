@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+:root{
+  --paper:#f4f1ea; --paper2:#ece6d8; --ink:#18170f; --ink-soft:#6b675c;
+  --accent:#e7522d; --line:#d8d2c4; --dark:#16150f; --on-dark:#efe9da; --on-dark-soft:#a8a293;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{background:var(--paper); color:var(--ink); font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; overflow-x:hidden;}
+img{display:block; max-width:100%;}
+::selection{background:var(--accent); color:#fff;}
+</style>
+</helmet>
+
+<div>
+
+<header style="position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px clamp(20px,5vw,64px);background:rgba(244,241,234,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)">
+  <a href="index.html" style="text-decoration:none;color:var(--ink);font-weight:700;letter-spacing:-0.01em;font-size:15px">Matías Neira</a>
+  <nav style="display:flex;align-items:center;gap:clamp(12px,1.8vw,28px);flex-wrap:wrap;justify-content:flex-end">
+    <a href="index.html#work" style="text-decoration:none;color:var(--ink);font-size:13px;font-weight:500">{{ nav_work }}</a>
+    <a href="index.html#about" style="text-decoration:none;color:var(--ink);font-size:13px;font-weight:500">{{ nav_about }}</a>
+    <a href="index.html#contact" style="text-decoration:none;color:var(--ink);font-size:13px;font-weight:500">{{ nav_contact }}</a>
+    <span style="width:1px;height:14px;background:var(--line)"></span>
+    <div style="display:flex;align-items:center;gap:8px">
+      <sc-for list="{{ langs }}" as="lng" hint-placeholder-count="5">
+        <button onClick="{{ lng.onSelect }}" style="{{ lng.style }}">{{ lng.label }}</button>
+      </sc-for>
+    </div>
+  </nav>
+</header>
+
+<main data-screen-label="Caso Ocular" style="padding-top:84px">
+
+  <section style="padding:clamp(40px,7vh,90px) clamp(20px,5vw,64px) clamp(30px,4vh,52px);max-width:1180px;margin:0 auto">
+    <a href="index.html#work" style="text-decoration:none;color:var(--ink-soft);font-size:12px;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;margin-bottom:clamp(28px,5vh,56px)">← {{ nav_work }}</a>
+    <span style="display:block;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;color:var(--accent)">{{ o_eyebrow }}</span>
+    <h1 style="font-size:clamp(2.3rem,6vw,5.2rem);line-height:1;letter-spacing:-0.028em;font-weight:700;margin:18px 0 0;max-width:18ch;text-wrap:balance">{{ ocular_title }}</h1>
+    <p style="font-size:clamp(1.15rem,2vw,1.6rem);line-height:1.4;color:var(--ink-soft);max-width:50ch;margin:26px 0 0;font-weight:400">{{ o_lead }}</p>
+    <div style="display:flex;flex-wrap:wrap;gap:clamp(28px,5vw,64px);margin-top:clamp(34px,5vh,56px);padding-top:30px;border-top:1px solid var(--line)">
+      <div><div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px">{{ m_year }}</div><div style="font-size:1.05rem;font-weight:500">{{ o_year_val }}</div></div>
+      <div><div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px">{{ m_role }}</div><div style="font-size:1.05rem;font-weight:500">{{ o_role_val }}</div></div>
+      <div><div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px">{{ m_funding }}</div><div style="font-size:1.05rem;font-weight:500">Instituto Luis Krebs</div></div>
+    </div>
+  </section>
+
+  <figure style="margin:0;padding:0 clamp(20px,5vw,64px)">
+    <div style="max-width:1400px;margin:0 auto;border-radius:3px;overflow:hidden;background:var(--paper2)">
+      <img src="assets/img/ocular-3q.png" alt="" style="width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:center 35%">
+    </div>
+    <figcaption style="max-width:1180px;margin:14px auto 0;font-size:13px;color:var(--ink-soft)">{{ o_cap_front }}</figcaption>
+  </figure>
+
+  <section style="max-width:1180px;margin:0 auto;padding:clamp(56px,9vh,120px) clamp(20px,5vw,64px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(32px,5vw,72px);align-items:center">
+      <div>
+        <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;color:var(--accent)">{{ s_challenge }}</span>
+        <p style="font-size:clamp(1.15rem,1.7vw,1.45rem);line-height:1.5;margin:18px 0 0;font-weight:400">{{ o_challenge }}</p>
+      </div>
+      <figure style="margin:0">
+        <div style="background:#fff;border-radius:3px;overflow:hidden;display:flex;justify-content:center;padding:16px"><img src="assets/img/ocular-sketch-eye.png" alt="" style="width:auto;max-height:420px;object-fit:contain;mix-blend-mode:multiply"></div>
+        <figcaption style="margin:12px 2px 0;font-size:13px;color:var(--ink-soft)">{{ o_cap_eye }}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section style="background:var(--dark);color:var(--on-dark);padding:clamp(64px,11vh,150px) clamp(20px,5vw,64px)">
+    <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(32px,5vw,72px);align-items:center">
+      <div>
+        <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;color:var(--accent)">{{ s_howitworks }}</span>
+        <p style="font-size:clamp(1.7rem,3.2vw,2.7rem);line-height:1.18;letter-spacing:-0.02em;font-weight:700;margin:18px 0 0;color:var(--on-dark)">{{ o_how_qt }}</p>
+        <p style="font-size:1.1rem;line-height:1.55;color:var(--on-dark-soft);margin:22px 0 0;max-width:48ch">{{ o_how_body }}</p>
+      </div>
+      <figure style="margin:0">
+        <div style="background:var(--paper2);border-radius:3px;overflow:hidden;aspect-ratio:3/4;max-height:520px"><img src="assets/img/ocular-side.png" alt="" style="width:100%;height:100%;object-fit:cover"></div>
+        <figcaption style="margin:12px 2px 0;font-size:13px;color:var(--on-dark-soft)">{{ o_cap_side }}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section style="max-width:1180px;margin:0 auto;padding:clamp(56px,9vh,120px) clamp(20px,5vw,64px)">
+    <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;color:var(--accent)">{{ s_process }}</span>
+    <p style="font-size:clamp(1.15rem,1.7vw,1.45rem);line-height:1.5;margin:18px 0 clamp(34px,5vh,56px);font-weight:400;max-width:62ch">{{ o_process }}</p>
+    <figure style="margin:0">
+      <div style="background:#fff;border-radius:3px;overflow:hidden;display:flex;justify-content:center;padding:18px"><img src="assets/img/ocular-sketch-fit.png" alt="" style="width:auto;max-height:560px;object-fit:contain;mix-blend-mode:multiply"></div>
+      <figcaption style="margin:12px 2px 0;font-size:13px;color:var(--ink-soft)">{{ o_cap_sketch }}</figcaption>
+    </figure>
+  </section>
+
+  <section style="background:var(--paper2);padding:clamp(56px,9vh,120px) clamp(20px,5vw,64px)">
+    <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(32px,5vw,72px);align-items:center">
+      <figure style="margin:0">
+        <div style="background:var(--paper);border-radius:3px;overflow:hidden;aspect-ratio:4/3"><img src="assets/img/ocular-collab.png" alt="" style="width:100%;height:100%;object-fit:contain"></div>
+        <figcaption style="margin:12px 2px 0;font-size:13px;color:var(--ink-soft)">{{ o_cap_collab }}</figcaption>
+      </figure>
+      <div>
+        <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;color:var(--accent)">{{ s_collab }}</span>
+        <p style="font-size:clamp(1.15rem,1.7vw,1.45rem);line-height:1.5;margin:18px 0 0;font-weight:400">{{ o_collab }}</p>
+        <div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--line)">
+          <div style="font-size:1.15rem;font-weight:600;letter-spacing:-0.01em">Francisco Vergara</div>
+          <div style="color:var(--ink-soft);margin-top:5px;font-size:0.98rem;line-height:1.45">{{ vergara_role }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--dark);color:var(--on-dark);padding:clamp(64px,11vh,150px) clamp(20px,5vw,64px)">
+    <div style="max-width:1180px;margin:0 auto">
+      <span style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;color:var(--accent)">{{ s_origin }}</span>
+      <p style="font-size:clamp(1.4rem,2.6vw,2.1rem);line-height:1.35;letter-spacing:-0.01em;font-weight:400;margin:20px 0 0;max-width:48ch;color:var(--on-dark)">{{ o_origin }}</p>
+    </div>
+  </section>
+
+  <a href="Proyecto-DAHD.html" data-cursor="{{ cta_view }}" style="display:block;text-decoration:none;color:inherit;border-top:1px solid var(--line);padding:clamp(40px,7vh,84px) clamp(20px,5vw,64px)">
+    <div style="max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-soft)">{{ next_project }}</div>
+        <div style="font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;letter-spacing:-0.025em;margin-top:10px">{{ dahd_title }}</div>
+      </div>
+      <span style="font-size:clamp(2rem,4vw,3rem);color:var(--accent)">→</span>
+    </div>
+  </a>
+
+  <footer style="border-top:1px solid var(--line);padding:26px clamp(20px,5vw,64px);display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:center;font-size:13px;color:var(--ink-soft)">
+    <span>{{ copyright }}</span>
+    <a href="index.html" style="text-decoration:none;color:var(--ink);font-size:13px">↑ {{ nav_back }}</a>
+  </footer>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    let lang = "es";
+    try { lang = localStorage.getItem("pf_lang") || "es"; } catch(e){}
+    this.state = { lang, ready:false };
+    this._I18N = null; this._LANGS = [];
+  }
+  async componentDidMount(){
+    try { const m = await import("./i18n.js"); this._I18N = m.I18N; this._LANGS = m.LANGS; } catch(e){ console.error(e); }
+    this.setState({ ready:true });
+    try {
+      const c = await import("./cursor.js");
+      const acc = (getComputedStyle(document.documentElement).getPropertyValue("--accent")||"").trim() || "#e7522d";
+      c.initCursor({ accent: acc, ink:"#18170f" });
+    } catch(e){}
+  }
+  setLang(code){ try{localStorage.setItem("pf_lang",code);}catch(e){} this.setState({ lang:code }); }
+  renderVals(){
+    const lang = this.state.lang;
+    const t = (this._I18N && this._I18N[lang]) || {};
+    const langs = (this._LANGS||[]).map(l=>({
+      code:l.code, label:l.label,
+      onSelect: ()=>this.setLang(l.code),
+      style: "background:none;border:none;font-family:inherit;cursor:pointer;padding:2px;font-size:12px;letter-spacing:0.08em;font-weight:"+(l.code===lang?"700":"400")+";color:"+(l.code===lang?"var(--accent)":"var(--ink-soft)")
+    }));
+    return Object.assign({}, t, { rootOpacity: this.state.ready ? "1":"0", langs });
+  }
+}
+</script>
+</body>
+</html>
