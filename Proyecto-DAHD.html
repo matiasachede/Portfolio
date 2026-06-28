@@ -23,17 +23,22 @@ img{display:block; max-width:100%;}
 
 <div>
 
-<header style="position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px clamp(20px,5vw,64px);background:rgba(244,241,234,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)">
-  <a href="index.html" style="text-decoration:none;color:var(--ink);font-weight:700;letter-spacing:-0.01em;font-size:15px">Matías Neira</a>
+<header style="position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px clamp(20px,5vw,64px);background:#FF7F00E3;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.14)">
+  <a href="index.html" style="text-decoration:none;color:#fff;font-weight:700;letter-spacing:-0.01em;font-size:15px;text-transform:uppercase">Matías Neira</a>
   <nav style="display:flex;align-items:center;gap:clamp(12px,1.8vw,28px);flex-wrap:wrap;justify-content:flex-end">
-    <a href="index.html#work" style="text-decoration:none;color:var(--ink);font-size:13px;font-weight:500">{{ nav_work }}</a>
-    <a href="index.html#about" style="text-decoration:none;color:var(--ink);font-size:13px;font-weight:500">{{ nav_about }}</a>
-    <a href="index.html#contact" style="text-decoration:none;color:var(--ink);font-size:13px;font-weight:500">{{ nav_contact }}</a>
-    <span style="width:1px;height:14px;background:var(--line)"></span>
-    <div style="display:flex;align-items:center;gap:8px">
-      <sc-for list="{{ langs }}" as="lng" hint-placeholder-count="5">
-        <button onClick="{{ lng.onSelect }}" style="{{ lng.style }}">{{ lng.label }}</button>
-      </sc-for>
+    <a href="index.html#work" style="text-decoration:none;color:#fff;font-size:13px;font-weight:500">{{ nav_work }}</a>
+    <a href="index.html#about" style="text-decoration:none;color:#fff;font-size:13px;font-weight:500">{{ nav_about }}</a>
+    <a href="index.html#contact" style="text-decoration:none;color:#fff;font-size:13px;font-weight:500">{{ nav_contact }}</a>
+    <span style="width:1px;height:14px;background:rgba(255,255,255,.3)"></span>
+    <div style="position:relative">
+      <button onClick="{{ toggleLangMenu }}" aria-haspopup="listbox" aria-expanded="{{ langOpen }}" style="background:none;border:none;font-family:inherit;cursor:pointer;padding:4px 2px;font-size:12px;letter-spacing:0.08em;font-weight:700;color:#fff;display:inline-flex;align-items:center;gap:4px">{{ activeLangLabel }} <svg viewBox="0 0 12 8" width="10" height="7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1.5l5 5 5-5"/></svg></button>
+      <sc-if value="{{ langOpen }}" hint-placeholder-val="{{ false }}">
+        <div role="listbox" style="position:absolute;top:calc(100% + 6px);right:0;min-width:56px;background:rgba(244,241,234,.96);border:1px solid var(--line);border-radius:7px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:6px 0;z-index:1001">
+          <sc-for list="{{ langs }}" as="lng" hint-placeholder-count="5">
+            <button role="option" onClick="{{ lng.onSelect }}" style="{{ lng.style }}">{{ lng.label }}</button>
+          </sc-for>
+        </div>
+      </sc-if>
     </div>
   </nav>
 </header>
@@ -172,28 +177,37 @@ class Component extends DCLogic {
     super(props);
     let lang = "es";
     try { lang = localStorage.getItem("pf_lang") || "es"; } catch(e){}
-    this.state = { lang, ready:false };
+    this.state = { lang, ready:false, langOpen:false };
     this._I18N = null; this._LANGS = [];
+    this._closeLangMenu = (e) => {
+      if (this.state.langOpen && !e.target.closest('[aria-haspopup="listbox"]') && !e.target.closest('[role="listbox"]')) {
+        this.setState({ langOpen: false });
+      }
+    };
+    this._escHandler = (e) => { if (e.key === "Escape" && this.state.langOpen) this.setState({ langOpen: false }); };
   }
   async componentDidMount(){
     try { const m = await import("./i18n.js"); this._I18N = m.I18N; this._LANGS = m.LANGS; } catch(e){ console.error(e); }
     this.setState({ ready:true });
-    try {
-      const c = await import("./cursor.js");
-      const acc = (getComputedStyle(document.documentElement).getPropertyValue("--accent")||"").trim() || "#e7522d";
-      c.initCursor({ accent: acc, ink:"#18170f" });
-    } catch(e){}
+    document.addEventListener("click", this._closeLangMenu);
+    document.addEventListener("keydown", this._escHandler);
   }
-  setLang(code){ try{localStorage.setItem("pf_lang",code);}catch(e){} this.setState({ lang:code }); }
+  setLang(code){ try{localStorage.setItem("pf_lang",code);}catch(e){} this.setState({ lang:code, langOpen:false }); }
   renderVals(){
     const lang = this.state.lang;
     const t = (this._I18N && this._I18N[lang]) || {};
+    const activeLangEntry = (this._LANGS||[]).find(l=>l.code===lang);
+    const activeLangLabel = activeLangEntry ? activeLangEntry.label : "ES";
     const langs = (this._LANGS||[]).map(l=>({
       code:l.code, label:l.label,
       onSelect: ()=>this.setLang(l.code),
-      style: "background:none;border:none;font-family:inherit;cursor:pointer;padding:2px;font-size:12px;letter-spacing:0.08em;font-weight:"+(l.code===lang?"700":"400")+";color:"+(l.code===lang?"var(--accent)":"var(--ink-soft)")
+      style: "background:none;border:none;font-family:inherit;cursor:pointer;padding:6px 14px;font-size:12px;letter-spacing:0.08em;display:block;width:100%;text-align:left;font-weight:"+(l.code===lang?"700":"400")+";color:"+(l.code===lang?"var(--accent)":"var(--ink-soft)")
     }));
-    return Object.assign({}, t, { rootOpacity: this.state.ready ? "1":"0", langs });
+    return Object.assign({}, t, {
+      rootOpacity: this.state.ready ? "1":"0", langs, activeLangLabel,
+      langOpen: this.state.langOpen,
+      toggleLangMenu: ()=>this.setState({ langOpen: !this.state.langOpen })
+    });
   }
 }
 </script>
