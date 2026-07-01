@@ -15,7 +15,9 @@
   --accent:#e7522d; --accent2:#FF8000; --line:#d8d2c4; --dark:#252526; --on-dark:#eef1f8; --on-dark-soft:#9ba6c4; --on-dark-line:rgba(255,255,255,.14);
   --texture:linear-gradient(rgba(37,37,38,.26),rgba(37,37,38,.48)),url("assets/img/texture-topo-v2.jpg");
 }
-*{box-sizing:border-box;}
+*{box-sizing:border-box;cursor:default;}
+a,a *,button,[role="option"],label[for],[tabindex]:not([tabindex="-1"]),summary{cursor:pointer;}
+input,textarea,select{cursor:text;}
 html,body{margin:0;padding:0;}
 body{
   background:var(--paper); color:var(--ink);
